@@ -244,7 +244,8 @@ bool VolunteersBook::findItem()
                             .arg(ui->phoneEdit->text().insert(0, "+38 (").insert(8, ") ").insert(13,'-').insert(16,'-'))
                             .arg(cardID);
 
-        searchResult->displaySearchResult(fontModify, filter, database); // Method thats display result of search using filter string
+        // Method thats display result of search using filter stringc
+        searchResult->displaySearchResult(fontModify, filter, database);
         searchResult->exec();
 
         clearSearchFields();
