@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/addItemIcon.ico</file>
+        <file>icons/deleteItemIcon.ico</file>
+        <file>icons/mainWindowIcon.ico</file>
+        <file>icons/searchItemIcon.ico</file>
+        <file>icons/updateItemIcon.ico</file>
+        <file>icons/setFontIcon.ico</file>
+    </qresource>
+</RCC>
