@@ -50,9 +50,9 @@ VolunteersBook::VolunteersBook(QWidget *parent) : QMainWindow(parent),
 
     ui->bookView->setModel(tablemodel);
 
-    loadSettings();
+    loadSettings(); // load font settings on starting
 
-    ui->bookView->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->bookView->setContextMenuPolicy(Qt::CustomContextMenu); // initialize custom context menu for bookView widget
 
     ui->bookView->hideColumn(0);
     ui->bookView->resizeColumnToContents(0);
@@ -78,7 +78,7 @@ VolunteersBook::VolunteersBook(QWidget *parent) : QMainWindow(parent),
     connect(ui->deleteItem, &QAction::triggered, this, &VolunteersBook::deleteItem);
     connect(ui->searchBtn, &QPushButton::clicked, this, &VolunteersBook::findItem);
     connect(ui->fontTuning, &QAction::triggered, this, &VolunteersBook::setFontModyfy);
-    connect(ui->bookView, &QTableView::customContextMenuRequested, this, &VolunteersBook::itemContextMenu);
+    connect(ui->bookView, &QTableView::customContextMenuRequested, this, &VolunteersBook::itemContextMenu); // connect right button click with context menu
 }
 
 VolunteersBook::~VolunteersBook()
