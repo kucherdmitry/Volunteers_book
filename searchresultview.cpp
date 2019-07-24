@@ -29,7 +29,7 @@ void SearchResultView::displaySearchResult(FontModifyDialog &font, QString &filt
     ui->searchResultTableView->hideColumn(0);
     ui->searchResultTableView->setFont(font.getFont());
 
-//    ui->searchResultTableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->searchResultTableView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     ui->searchResultTableView->resizeColumnToContents(0);
     ui->searchResultTableView->resizeColumnToContents(1);
@@ -38,18 +38,6 @@ void SearchResultView::displaySearchResult(FontModifyDialog &font, QString &filt
     ui->searchResultTableView->resizeColumnToContents(4);
     ui->searchResultTableView->resizeColumnToContents(5);
     ui->searchResultTableView->resizeColumnToContents(6);
-
-//    int viewWidgth{0};
-
-//    for (int i = 1; i < model->columnCount(); ++i)
-//    {
-//        viewWidgth += ui->searchResultTableView->columnWidth(i);
-//    }
-
-//    ui->searchResultTableView->setGeometry(ui->searchResultTableView->pos().rx(),
-//                                           ui->searchResultTableView->pos().ry(),
-//                                           viewWidgth,
-//                                           ui->searchResultTableView->height());
 
     ui->searchResultTableView->show();
 }
