@@ -8,6 +8,8 @@ ItemDialog::ItemDialog(QWidget *parent) : QDialog(parent),
 
     connect(ui->itemAddBtn, &QPushButton::clicked, this, &ItemDialog::setAddItemFields);
     connect(ui->itemUpdateBtn, &QPushButton::clicked, this, &ItemDialog::setUpdateItemFields);
+
+    ui->itemPhoneEdit->setInputMask("+38 (999) 999-99-99");
 }
 
 ItemDialog::~ItemDialog()
@@ -38,7 +40,7 @@ void ItemDialog::setAddItemFields()
 
     if(!ui->itemPhoneEdit->text().isEmpty())
     {
-        Phone = ui->itemPhoneEdit->text().insert(0, "+38 (").insert(8, ") ").insert(13,'-').insert(16,'-');
+        Phone = ui->itemPhoneEdit->text();
     }
 
     if(!ui->itemStreetNameEdit->text().isEmpty())
@@ -105,7 +107,7 @@ void ItemDialog::updateItemMode(int &index, QSqlTableModel &model)
     ui->itemFirstNameEdit->setText(model.index(index, 2).data().toString());
     ui->itemSecondnameEdit->setText(model.index(index, 1).data().toString());
     ui->itemThirdNameEdit->setText(model.index(index, 3).data().toString());
-    ui->itemPhoneEdit->setText(model.index(index, 4).data().toString().remove(0, 5).remove(3, 2).remove(6, 1).remove(8, 1));
+    ui->itemPhoneEdit->setText(model.index(index, 4).data().toString());
 
     ui->itemStreetNameEdit->setText(address.section(',', 0, 0).remove(0, 5));
     ui->itemBuildingNumberEdit->setText(address.section(',', 1, 1).remove(0, 1));
@@ -124,14 +126,14 @@ void ItemDialog::updateItemMode(int &index, QSqlTableModel &model)
     ui->itemBuildingNumberEdit->setTabOrder(ui->itemBuildingNumberEdit,ui->itemAptNumberEdit);
 }
 
-bool ItemDialog::isFieldsIsEmpty()
+bool ItemDialog::isFieldsIsNull()
 {
-    if(CardID.isEmpty()
-    && Secondname.isEmpty()
-    && Firstname.isEmpty()
-    && Thirdname.isEmpty()
-    && Phone.isEmpty()
-    && Address.isEmpty())
+    if(CardID.isNull()
+    || Secondname.isNull()
+    || Firstname.isNull()
+    || Thirdname.isNull()
+    || Phone.isNull()
+    || Address.isNull())
     {
         return true;
     }

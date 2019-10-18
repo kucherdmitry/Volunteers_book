@@ -51,18 +51,18 @@ public:
     void addItemMode(); // modifying access to fields in dialog
     void updateItemMode(int &index, QSqlTableModel &model); // modifying access to fields in dialog
 
-    bool isFieldsIsEmpty(); // checking for empty input strings
+    bool isFieldsIsNull(); // checking for null input strings
 
 private:
     Ui::ItemDialog *ui;
 
-    QString ID = "";
-    QString Firstname = "";
-    QString Secondname = "";
-    QString Thirdname = "";
-    QString Phone = "";
-    QString Address = "";
-    QString CardID = "";
+    QString ID;
+    QString Firstname;
+    QString Secondname;
+    QString Thirdname;
+    QString Phone;
+    QString Address;
+    QString CardID;
 };
 
 #endif // ITEMDIALOG_H

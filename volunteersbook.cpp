@@ -21,13 +21,15 @@ VolunteersBook::VolunteersBook(QWidget *parent) : QMainWindow(parent),
     if(database->tables().isEmpty())
     {
         QSqlQuery query;
-        QString str = "CREATE TABLE Volunteers (ID         INTEGER        NOT NULL PRIMARY KEY AUTOINCREMENT, "
-                                               "Secondname VARCHAR (255)  NOT NULL, "
-                                               "Firstname  VARCHAR (255)  NOT NULL, "
-                                               "Thirdname  VARCHAR (255)  NOT NULL, "
-                                               "Phone      VARCHAR (12)   NOT NULL, "
-                                               "Address    VARCHAR (1024) NOT NULL, "
-                                               "CardID     VARCHAR (6)    NOT NULL UNIQUE);";
+        QString str = "CREATE TABLE Volunteers (ID         INTEGER        NOT NULL ON CONFLICT ABORT"
+                      "                                                   PRIMARY KEY AUTOINCREMENT,"
+                      "                         Secondname VARCHAR (255)  NOT NULL ON CONFLICT ABORT,"
+                      "                         Firstname  VARCHAR (255)  NOT NULL ON CONFLICT ABORT,"
+                      "                         Thirdname  VARCHAR (255)  NOT NULL ON CONFLICT ABORT,"
+                      "                         Phone      VARCHAR (12)   NOT NULL ON CONFLICT ABORT,"
+                      "                         Address    VARCHAR (1024) NOT NULL ON CONFLICT ABORT,"
+                      "                         CardID     VARCHAR (6)    NOT NULL ON CONFLICT ABORT"
+                      "                                                   UNIQUE                   );";
 
         if(!query.exec(str))
         {
@@ -69,6 +71,8 @@ VolunteersBook::VolunteersBook(QWidget *parent) : QMainWindow(parent),
     ui->thirdNameEdit->setTabOrder(ui->thirdNameEdit, ui->phoneEdit);
     ui->phoneEdit->setTabOrder(ui->phoneEdit, ui->cardIDEdit);
 
+    ui->phoneEdit->setInputMask("+38 (999) 999-99-99");
+
     ui->bookView->show();
 
     //=======================[Connecting actions]===============================
@@ -98,7 +102,7 @@ bool VolunteersBook::addItem()
     itemDialog->addItemMode();
     itemDialog->exec();
 
-    if(!itemDialog->isFieldsIsEmpty())
+    if(!itemDialog->isFieldsIsNull())
     {
         QSqlQuery query;
         QString str = "INSERT INTO Volunteers (Secondname, Firstname, Thirdname, Phone, Address, CardID) VALUES ('%1', '%2', '%3', '%4', '%5', '%6')";
@@ -130,8 +134,13 @@ bool VolunteersBook::addItem()
 
         return true;
     }
-
-    return false;
+    else
+    {
+        QMessageBox::warning(this, "Помилка при створенні запису!",
+                                   "Неможливо створити запис!"
+                                   "\nНе всі поля заповнені!");
+        return false;
+    }
 }
 
 bool VolunteersBook::updateItem()
@@ -144,7 +153,7 @@ bool VolunteersBook::updateItem()
         itemDialog->updateItemMode(index, *tablemodel);  // Launch service dialog
         itemDialog->exec();                              //
 
-        if(!itemDialog->isFieldsIsEmpty())
+        if(!itemDialog->isFieldsIsNull())
         {
             QSqlQuery query;
             QString str = "UPDATE Volunteers SET Secondname = '%1', "
@@ -157,7 +166,7 @@ bool VolunteersBook::updateItem()
             QString str_edit = str.arg(itemDialog->getSecondname())
                                   .arg(itemDialog->getFirstname())
                                   .arg(itemDialog->getThirdname())
-                                  .arg(itemDialog->getPhone().insert(0, "+38 (").insert(8, ") ").insert(13,'-').insert(16,'-'))
+                                  .arg(itemDialog->getPhone())
                                   .arg(itemDialog->getAddress())
                                   .arg(itemDialog->getID());
 
@@ -241,7 +250,7 @@ bool VolunteersBook::findItem()
         QString filter = str.arg(ui->secondNameEdit->text())
                             .arg(ui->firstnameEdit->text())
                             .arg(ui->thirdNameEdit->text())
-                            .arg(ui->phoneEdit->text().insert(0, "+38 (").insert(8, ") ").insert(13,'-').insert(16,'-'))
+                            .arg(ui->phoneEdit->text())
                             .arg(cardID);
 
         // Method thats display result of search using filter stringc

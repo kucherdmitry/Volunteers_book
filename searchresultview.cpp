@@ -18,6 +18,7 @@ void SearchResultView::displaySearchResult(FontModifyDialog &font, QString &filt
     model->setTable("Volunteers");
     model->setFilter(filter);
     model->select();
+
     model->setHeaderData(1,Qt::Horizontal, tr("Прізвище"));
     model->setHeaderData(2,Qt::Horizontal, tr("Ім'я"));
     model->setHeaderData(3,Qt::Horizontal, tr("По-батькові"));
