@@ -40,13 +40,18 @@ public:
 private:
     Ui::VolunteersBook *ui;
 
-    QSqlDatabase *database;
-    QSqlTableModel *tablemodel;
-    QShortcut *deleteFeatureShortcut;
-    QKeySequence *deleteFeatureSequence;
-    ItemDialog *itemDialog;
-    SearchResultView *searchResult;
+    QSqlDatabase *database = nullptr;
+    QSqlTableModel *tablemodel = nullptr;
+    QShortcut *deleteFeatureShortcut = nullptr;
+    QKeySequence *deleteFeatureSequence = nullptr;
+    ItemDialog *itemDialog = nullptr;
+    SearchResultView *searchResult = nullptr;
     FontModifyDialog fontModify;
+
+    QMenu *menu = nullptr;
+    QAction *ptr_addItem = nullptr;
+    QAction *ptr_updateItem = nullptr;
+    QAction *ptr_deleteItem = nullptr;
 };
 
 #endif // VOLUNTEERSBOOK_H

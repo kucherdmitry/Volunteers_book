@@ -93,6 +93,12 @@ VolunteersBook::~VolunteersBook()
     {
         database->close();
     }
+
+    delete menu;
+    delete ptr_addItem;
+    delete ptr_updateItem;
+    delete ptr_deleteItem;
+
     delete ui;
 }
 
@@ -132,13 +138,13 @@ bool VolunteersBook::addItem()
         ui->bookView->resizeColumnToContents(6);
         ui->bookView->show();
 
+        delete itemDialog;
         return true;
     }
     else
     {
-        QMessageBox::warning(this, "Помилка при створенні запису!",
-                                   "Неможливо створити запис!"
-                                   "\nНе всі поля заповнені!");
+        QMessageBox::warning(this, "Помилка при створенні запису!", "Неможливо створити запис!\nНе всі поля заповнені!");
+        delete itemDialog;
         return false;
     }
 }
@@ -188,10 +194,10 @@ bool VolunteersBook::updateItem()
             ui->bookView->resizeColumnToContents(6);  //
             ui->bookView->show();
 
+            delete itemDialog;
             return true;
         }
     }
-
     return false;
 }
 
@@ -259,6 +265,7 @@ bool VolunteersBook::findItem()
 
         clearSearchFields();
 
+        delete searchResult;
         return true;
     }
     return false;
@@ -328,22 +335,22 @@ void VolunteersBook::loadSettings()
 
 void VolunteersBook::itemContextMenu(QPoint pos)
 {
-    QMenu *menu = new QMenu(this);
-    QAction *addItem = new QAction(tr("Створити запис"), this);
-    QAction *updateItem = new QAction(tr("Змінити запис"), this);
-    QAction *deleteItem = new QAction(tr("Видалити запис"), this);
+    menu = new QMenu(this);
+    ptr_addItem = new QAction(tr("Створити запис"), this);
+    ptr_updateItem = new QAction(tr("Змінити запис"), this);
+    ptr_deleteItem = new QAction(tr("Видалити запис"), this);
 
-    addItem->setIcon(QIcon(":/icons/addItemIcon.ico"));
-    updateItem->setIcon(QIcon(":/icons/updateItemIcon.ico"));
-    deleteItem->setIcon(QIcon(":/icons/deleteItemIcon.ico"));
+    ptr_addItem->setIcon(QIcon(":/icons/addItemIcon.ico"));
+    ptr_updateItem->setIcon(QIcon(":/icons/updateItemIcon.ico"));
+    ptr_deleteItem->setIcon(QIcon(":/icons/deleteItemIcon.ico"));
 
-    connect(addItem, &QAction::triggered, this, &VolunteersBook::addItem);
-    connect(updateItem, &QAction::triggered, this, &VolunteersBook::updateItem);
-    connect(deleteItem, &QAction::triggered, this, &VolunteersBook::deleteItem);
+    connect(ptr_addItem, &QAction::triggered, this, &VolunteersBook::addItem);
+    connect(ptr_updateItem, &QAction::triggered, this, &VolunteersBook::updateItem);
+    connect(ptr_deleteItem, &QAction::triggered, this, &VolunteersBook::deleteItem);
 
-    menu->addAction(addItem);
-    menu->addAction(updateItem);
-    menu->addAction(deleteItem);
+    menu->addAction(ptr_addItem);
+    menu->addAction(ptr_updateItem);
+    menu->addAction(ptr_deleteItem);
 
     menu->popup(ui->bookView->viewport()->mapToGlobal(pos));
 }
